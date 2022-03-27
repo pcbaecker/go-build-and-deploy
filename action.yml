@@ -94,7 +94,7 @@ runs:
       echo "::set-output name=name::${{fromJSON(steps.docker-metadata.outputs.json).tags[1]}}"  
       
   - name: Echo
-  shell: bash
+    shell: bash
     run: echo "${{ steps.docker-imagename.outputs.name }}"
 
   - name: Checkout k8s repository
