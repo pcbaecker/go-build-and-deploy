@@ -49,15 +49,19 @@ runs:
 
   - name: Setup Go private modules repositories
     run: go env -w GOPRIVATE=${{ inputs.goprivate }}
+    shell: bash
 
   - name: Git config for private repositories
     run: git config --global url.https://${{ inputs.repoaccesstoken }}@github.com/.insteadOf https://github.com/
+    shell: bash
 
   - name: Build the Go executable
     run:  go build -o executable
+    shell: bash
 
   - name: Go test
     run: go test
+    shell: bash
 
   - name: Log in to the Container registry
     uses: docker/login-action@v1.12.0
@@ -85,10 +89,12 @@ runs:
 
   - name: Find the complete docker image name
     id: docker-imagename
+    shell: bash
     run: |
       echo "::set-output name=name::${{fromJSON(steps.docker-metadata.outputs.json).tags[1]}}"  
       
   - name: Echo
+  shell: bash
     run: echo "${{ steps.docker-imagename.outputs.name }}"
 
   - name: Checkout k8s repository
