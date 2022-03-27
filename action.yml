@@ -8,7 +8,7 @@ inputs:
   repoaccesstoken:
     description: 'The token used to access the private repositories'
     required: false
-    default: ${{ secrets.GITHUB_TOKEN }}
+    default: ${{ github.token }}
   container-registry:
     description: 'host of the container registry'
     required: false
@@ -20,7 +20,7 @@ inputs:
   container-password:
     description: 'The password used to login to the container registry'
     required: false
-    default: ${{ secrets.GITHUB_TOKEN }}
+    default: ${{ github.token }}
   container-imagename:
     description: 'The name of the container image'
     required: false
