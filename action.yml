@@ -37,6 +37,10 @@ inputs:
     description: 'The desired platform to be built for'
     required: false
     default: 'amd64'
+  run-tests:
+    description: 'If tests should be run or not'
+    required: false
+    default: true
 outputs:
   container-image:
     description: "Name of the built and deployed container image"
@@ -52,19 +56,23 @@ runs:
 #      go-version: 1.20
 
   - name: Setup Go private modules repositories
-    run: go env -w GOPRIVATE=${{ inputs.goprivate }} GOARCH=${{ inputs.platform }}
+    run: go env -w GOPRIVATE=${{ inputs.goprivate }}
     shell: bash
 
   - name: Git config for private repositories
     run: git config --global url.https://${{ inputs.repoaccesstoken }}@github.com/.insteadOf https://github.com/
     shell: bash
 
-  - name: Build the Go executable
-    run:  go build -o executable
-    shell: bash
-
   - name: Go test
     run: go test
+    shell: bash
+
+  - name: Setup Go target architecture
+    run: go env -w GOARCH=${{ inputs.platform }}
+    shell: bash
+
+  - name: Build the Go executable
+    run:  go build -o executable
     shell: bash
 
   - name: Set up Docker Context for Buildx
