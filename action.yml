@@ -135,13 +135,13 @@ runs:
     uses: actions/checkout@v2
     if : ${{ inputs.deploy-repository != '' }}
     with:
-      ref: 'master'
+      ref: ${{ inputs.target-branch }}
       repository: ${{ inputs.deploy-repository }}
       path: deploy-repo
       token: ${{ inputs.repoaccesstoken }}
 
   - name: Update Image Version in the related k8s repo deployment.yaml
-    uses: fjogeleit/yaml-update-action@main
+    uses: fjogeleit/yaml-update-action@v0.13.0
     if : ${{ inputs.deploy-repository != '' }}
     with:
       valueFile: ${{inputs.deploy-file}}
