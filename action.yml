@@ -52,7 +52,7 @@ runs:
 #      go-version: 1.20
 
   - name: Setup Go private modules repositories
-    run: go env -w GOPRIVATE=${{ inputs.goprivate }} -w GOARCH=${{ inputs.platform }}
+    run: go env -w GOPRIVATE=${{ inputs.goprivate }} GOARCH=${{ inputs.platform }}
     shell: bash
 
   - name: Git config for private repositories
