@@ -64,6 +64,7 @@ runs:
     shell: bash
 
   - name: Go test
+    if : ${{ inputs.run-tests}} == true
     run: go test
     shell: bash
 
