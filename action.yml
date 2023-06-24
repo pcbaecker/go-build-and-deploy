@@ -41,6 +41,14 @@ inputs:
     description: 'If tests should be run or not'
     required: false
     default: true
+  master-branch-name:
+    description: 'Name of the master / main branch'
+    required: false
+    default: 'master'
+  target-branch:
+    description: 'Name of the target branch, where the updated yaml file will be commited to'
+    required: false
+    default: 'master'
 outputs:
   container-image:
     description: "Name of the built and deployed container image"
@@ -143,3 +151,5 @@ runs:
       message: 'Update container image to ${{ steps.docker-imagename.outputs.name }}'
       token: ${{ inputs.repoaccesstoken }}
       workDir: deploy-repo
+      branch: ${{ inputs.target-branch }}
+      masterBranchName: ${{ inputs.master-branch-name }}
