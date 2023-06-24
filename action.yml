@@ -1,5 +1,5 @@
-name: 'Hello World'
-description: 'Greet someone'
+name: 'Go build and deploy'
+description: 'This action builds the actual go repository into a docker image and then writes the image name into a .yaml file'
 inputs:
   goprivate:
     description: 'The value that should be set for the GOPRIVATE env e.g. github.com/pcbaecker'
@@ -33,6 +33,10 @@ inputs:
     description: 'Path to the target deployment.yaml file'
     required: false
     default: ''
+  platform:
+    description: 'The desired platform to be built for'
+    required: false
+    default: 'amd64'
 outputs:
   container-image:
     description: "Name of the built and deployed container image"
@@ -48,7 +52,7 @@ runs:
 #      go-version: 1.20
 
   - name: Setup Go private modules repositories
-    run: go env -w GOPRIVATE=${{ inputs.goprivate }}
+    run: go env -w GOPRIVATE=${{ inputs.goprivate }} -w GOARCH=${{ inputs.platform }}
     shell: bash
 
   - name: Git config for private repositories
@@ -92,12 +96,13 @@ runs:
         {{branch}}
 
   - name: Build and push Docker image
-    uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
+    uses: docker/build-push-action@v4
     with:
       context: .
       push: true
       tags: ${{ steps.docker-metadata.outputs.tags }}
       labels: ${{ steps.docker-metadata.outputs.labels }}
+      platforms: linux/${{ inputs.platform }}
 
   - name: Find the complete docker image name
     id: docker-imagename
