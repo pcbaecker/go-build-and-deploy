@@ -145,7 +145,7 @@ runs:
     if : ${{ inputs.deploy-repository != '' }}
     with:
       valueFile: ${{inputs.deploy-file}}
-      propertyPath: 'spec.template.spec.containers[0].image'
+      propertyPath: 'spec.source.helm.values.user-service.image'
       value: ${{ steps.docker-imagename.outputs.name }}
       repository: ${{ inputs.deploy-repository }}
       message: 'Update container image to ${{ steps.docker-imagename.outputs.name }}'
