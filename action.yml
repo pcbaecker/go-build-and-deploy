@@ -49,6 +49,10 @@ inputs:
     description: 'Name of the target branch, where the updated yaml file will be commited to'
     required: false
     default: 'master'
+  go-main-location:
+    description: 'Path to the main file. Leave blank if main is in root folder.'
+    required: false
+    default: ''
 outputs:
   container-image:
     description: "Name of the built and deployed container image"
@@ -73,7 +77,7 @@ runs:
 
   - name: Go test
     if : ${{ inputs.run-tests}} == true
-    run: go test
+    run: go test ./...
     shell: bash
 
   - name: Setup Go target architecture
@@ -81,7 +85,7 @@ runs:
     shell: bash
 
   - name: Build the Go executable
-    run:  go build -o executable
+    run:  go build -o executable ${{ inputs.go-main-location }}
     shell: bash
 
   - name: Set up Docker Context for Buildx
