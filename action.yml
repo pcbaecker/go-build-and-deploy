@@ -53,6 +53,10 @@ inputs:
     description: 'Path to the main file. Leave blank if main is in root folder.'
     required: false
     default: ''
+  deploy-file-yaml-path:
+    description: 'The yaml path inside the yaml file in the deployment repository'
+    required: false
+    default: 'spec.template.spec.containers[0].image'
 outputs:
   container-image:
     description: "Name of the built and deployed container image"
@@ -149,7 +153,7 @@ runs:
     if : ${{ inputs.deploy-repository != '' }}
     with:
       valueFile: ${{inputs.deploy-file}}
-      propertyPath: 'spec.template.spec.containers[0].image'
+      propertyPath: ${{ inputs.deploy-file-yaml-path }}
       value: ${{ steps.docker-imagename.outputs.name }}
       repository: ${{ inputs.deploy-repository }}
       message: 'Update container image to ${{ steps.docker-imagename.outputs.name }}'
